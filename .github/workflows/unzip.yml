@@ -1,0 +1,24 @@
+name: Unzip Uploaded File
+
+on:
+  push:
+    paths:
+      - '*.zip' # بيشتغل تلقائيا اول ما ترفع ملف مضغوط
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract zip file
+        run: |
+          # بيجيب اول ملف zip مرفوع ويفكه في المستودع
+          unzip -o '*.zip' -d .
+          
+      - name: Commit extracted files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Automatically extracted zip file"
+          push_options: '--force'
